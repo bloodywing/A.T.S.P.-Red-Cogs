@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "Yama",
+    "INSTALL_MSG" : "Usage info with [p]help todo",
+    "NAME" : "ToDo",
+    "SHORT" : "Set and manage your own ToDo-list",
+    "DESCRIPTION" : "ToDo-list for every single user on the server. Saves a config-file for persistent data."
+}
