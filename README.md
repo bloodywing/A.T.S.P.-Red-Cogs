@@ -7,7 +7,6 @@ Install repo
 `-cog repo add atsp https://github.com/Nama/A.T.S.P.-Red-Cogs`  
 
 ## ToDo
--------
 **No, these are not things which I have to do. It's a cog!**  
 
 Every user has his own ToDo list, on which they can add and remove single entries.  
