@@ -10,6 +10,7 @@ Install repo
 **No, these are not things which I have to do. It's a cog!**  
 
 Every user has his own ToDo list, on which they can add and remove single entries.  
+Allows only Moderators and above to use the commands.  
 Install cog  
 `[p]cog install atsp todo`
 * Commands *Use with your prefix*
@@ -23,27 +24,28 @@ Install cog
 
 ## Messages
 Greet new members and use a broadcast with a delay on a channel  
+Allows only Administrators to use the commands.  
 Install cog  
 `[p]cog install atsp messages`
 
 ### Commands
 * welcome
-  * wchan 
+  * wchan  
     *Set the channel on which to greet the new members*
-  * text
+  * text  
     *Define the welcome message. To mention the member, put in the text `member.mention`*
 * msgs
-  * add
+  * add  
     *Add a message to the broadcast - Use Quotes if more than one word*
-  * bchan
+  * bchan  
     *Set the channel for the broadcast*
-  * delay
+  * delay  
     *The delay in **seconds** between the messages*
-  * list
+  * list  
     *Show the delay, channel and all added messages*
-  * rm
+  * rm  
     *Remove a message from the broadcast*
-  * start
+  * start  
     *Start the broadcast. Channel, delay and at leat one message need to be set.*
-  * stop
+  * stop  
     *Stop the broadcast. Happens also if you add or remove messages from the broadcast.*
