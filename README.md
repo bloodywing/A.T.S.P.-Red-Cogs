@@ -22,10 +22,9 @@ Install cog
     *Remove a ToDo*
 
 ## Messages
-* Greet new members
-* Use a broadcast with a delay on a channel
-
-* Welcome
+Greet new members and use a broadcast with a delay on a channel  
+### Commands
+* welcome
   * wchan 
     *Set the channel on which to greet the new members*
   * text
