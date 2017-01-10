@@ -1,12 +1,12 @@
 import os
 import pickle
 import discord
+from cogs.utils import checks
 from discord.ext import commands
-from cogs.utils.dataIO import dataIO
 
 
 class ToDo:
-    """Manage your ToDo list"""
+    '''Manage your ToDo list'''
 
     def __init__(self, bot):
         self.bot = bot
@@ -14,36 +14,41 @@ class ToDo:
         self.config = pickle.load(open(self.config_file, 'rb'))
 
     @commands.group(pass_context=True)
+    @checks.admin_or_permissions(ban_members=True)
     async def todo(self, cmd):
-        """Make your own ToDo list and manage it"""
+        '''Make your own ToDo list and manage it'''
         if cmd.invoked_subcommand is None:
             try:
                 user = str(cmd.message.author)
                 index = 0
                 if len(self.config[user]) != 0:
+                    msg = '**Your ToDo list**\n'
                     for i in self.config[user]:
-                        await self.bot.say('{0}: {1}'.format(index, i))
+                        msg += '*{0}*: {1}\n'.format(index, i)
                         index += 1
+                    await self.bot.say(msg)
                 else:
-                    await self.bot.say('Yo have nothen to do...')
+                    await self.bot.say('You have nothing to do! :D')
             except KeyError:
-                await self.bot.say('Yo have nothen to do...')
+                await self.bot.say('You have nothing to do! :D')
             except:
                 await self.bot.say('An error happened?!')
 
     @todo.command(pass_context=True)
+    @checks.admin_or_permissions(ban_members=True)
     async def add(self, cmd, text):
-        '''Add something to do'''
+        '''Add something to do - using quotes'''
         user = str(cmd.message.author)
         if user not in self.config:
             self.config[user] = list()
         self.config[user].append(text)
         pickle.dump(self.config, open(self.config_file, 'wb'))
-        await self.bot.say('its saved m8')
+        await self.bot.say('New ToDo added!')
 
     @todo.command(pass_context=True)
+    @checks.admin_or_permissions(ban_members=True)
     async def rm(self, cmd, index):
-        '''Remove something you did already - put your text in quotes'''
+        '''Remove something you did already'''
         user = str(cmd.message.author)
         if user in self.config:
             try:
@@ -59,7 +64,7 @@ class ToDo:
                 except IndexError:
                     fine = False
                 if fine:
-                    await self.bot.say('ToDo updated!')
+                    await self.bot.say('ToDo removed!')
                 else:
                     await self.bot.say('The number was wrong...')
             else:
