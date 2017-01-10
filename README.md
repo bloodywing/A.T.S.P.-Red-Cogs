@@ -23,6 +23,9 @@ Install cog
 
 ## Messages
 Greet new members and use a broadcast with a delay on a channel  
+Install cog  
+`[p]cog install atsp messages`
+
 ### Commands
 * welcome
   * wchan 
