@@ -20,3 +20,28 @@ Install cog
     *Add a new ToDo - Use Quotes if more than one word*
   * todo rm Index-Number  
     *Remove a ToDo*
+
+## Messages
+* Greet new members
+* Use a broadcast with a delay on a channel
+
+* Welcome
+  * wchan 
+    *Set the channel on which to greet the new members*
+  * text
+    *Define the welcome message. To mention the member, put in the text `member.mention`*
+* msgs
+  * add
+    *Add a message to the broadcast - Use Quotes if more than one word*
+  * bchan
+    *Set the channel for the broadcast*
+  * delay
+    *The delay in **seconds** between the messages*
+  * list
+    *Show the delay, channel and all added messages*
+  * rm
+    *Remove a message from the broadcast*
+  * start
+    *Start the broadcast. Channel, delay and at leat one message need to be set.*
+  * stop
+    *Stop the broadcast. Happens also if you add or remove messages from the broadcast.*
