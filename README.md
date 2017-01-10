@@ -40,7 +40,7 @@ Install cog
   * bchan  
     *Set the channel for the broadcast*
   * delay  
-    *The delay in **seconds** between the messages*
+    *The delay in __seconds__ between the messages*
   * list  
     *Show the delay, channel and all added messages*
   * rm  
