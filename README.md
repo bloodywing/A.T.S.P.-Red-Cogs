@@ -57,7 +57,7 @@ Install cog
 `[p]cog install atsp reminder`
 
 ### Commands
-* forgetme
+* forgetme  
   *Removes all your active reminders*
-* remind
+* remind  
   *Either reminds you "me" or reminds another user. You can use their actual nick, the loginname with and without the #Numbers or just @Mention.*
