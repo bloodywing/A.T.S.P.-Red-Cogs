@@ -2,6 +2,6 @@
     "AUTHOR" : "Yama",
     "INSTALL_MSG" : "There are two commands, [p]msgs and [p]welcome.",
     "NAME" : "Messages",
-    "SHORT" : "Greetings and broadcast with custom messages and delay.",
+    "SHORT" : "Greetings and broadcast with custom messages and delay",
     "DESCRIPTION" : "Greet new members with a custom message. Set a broadcast with multiple messages, custom delay and a channel."
 }

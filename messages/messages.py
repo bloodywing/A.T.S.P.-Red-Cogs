@@ -25,7 +25,7 @@ class Messages:
 
     @welcome.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def wchan(self, cmd, text):
+    async def wchan(self, cmd, text : str):
         '''Set the channel for the welcome message'''
         self.config['welcome'][0] = text
         pickle.dump(self.config, open(self.config_file, 'wb'))
@@ -33,7 +33,7 @@ class Messages:
 
     @welcome.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def text(self, cmd, text):
+    async def text(self, cmd, *, text : str):
         '''Set the welcome message - put member.mention to mention the user'''
         self.config['welcome'][1] = text
         pickle.dump(self.config, open(self.config_file, 'wb'))
@@ -115,7 +115,7 @@ class Messages:
 
     @msgs.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def bchan(self, cmd, text):
+    async def bchan(self, cmd, text : str):
         '''Set the channel for the broadcast'''
         self.config['chan'] = text
         pickle.dump(self.config, open(self.config_file, 'wb'))
@@ -123,23 +123,15 @@ class Messages:
 
     @msgs.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def delay(self, cmd, seconds):
+    async def delay(self, cmd, seconds : int):
         '''Set the delay in seconds'''
-        try:
-            self.config['delay'] = int(seconds)
-            fine = True
-        except ValueError:
-            fine = False
-        if fine:
-            pickle.dump(self.config, open(self.config_file, 'wb'))
-            await self.bot.say('Broadcast delay set to {0}!'.format(seconds))
-        else:
-            await self.bot.say('I need a number...')
+        pickle.dump(self.config, open(self.config_file, 'wb'))
+        await self.bot.say('Broadcast delay set to {0}!'.format(seconds))
 
     @msgs.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def add(self, cmd, text):
-        '''Add a message - using quotes'''
+    async def add(self, cmd, *, text : str):
+        '''Add a message'''
         if self.bc:
             self.bc = False
         self.config['bc'].append(text)
@@ -148,28 +140,20 @@ class Messages:
 
     @msgs.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def rm(self, cmd, index):
+    async def rm(self, cmd, index : int):
         '''Remove a message'''
         try:
-            index = int(index)
+            if self.bc:
+                self.bc = False
+            self.config['bc'].pop(index)
+            pickle.dump(self.config, open(self.config_file, 'wb'))
             fine = True
-        except ValueError:
+        except IndexError:
             fine = False
         if fine:
-            try:
-                if self.bc:
-                    self.bc = False
-                self.config['bc'].pop(index)
-                pickle.dump(self.config, open(self.config_file, 'wb'))
-                fine = True
-            except IndexError:
-                fine = False
-            if fine:
-                await self.bot.say('Broadcast message removed!')
-            else:
-                await self.bot.say('The number was wrong...')
+            await self.bot.say('Broadcast message removed!')
         else:
-            await self.bot.say('I need a number...')
+            await self.bot.say('The number was wrong...')
 
 
 def check_data():

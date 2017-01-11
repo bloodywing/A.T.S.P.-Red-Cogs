@@ -36,8 +36,8 @@ class ToDo:
 
     @todo.command(pass_context=True)
     @checks.admin_or_permissions(ban_members=True)
-    async def add(self, cmd, text):
-        '''Add something to do - using quotes'''
+    async def add(self, cmd, *, text : str):
+        '''Add something to do'''
         user = str(cmd.message.author)
         if user not in self.config:
             self.config[user] = list()
@@ -47,28 +47,20 @@ class ToDo:
 
     @todo.command(pass_context=True)
     @checks.admin_or_permissions(ban_members=True)
-    async def rm(self, cmd, index):
+    async def rm(self, cmd, index : int):
         '''Remove something you did already'''
         user = str(cmd.message.author)
         if user in self.config:
             try:
-                index = int(index)
+                self.config[user].pop(index)
+                pickle.dump(self.config, open(self.config_file, 'wb'))
                 fine = True
-            except ValueError:
+            except IndexError:
                 fine = False
             if fine:
-                try:
-                    self.config[user].pop(index)
-                    pickle.dump(self.config, open(self.config_file, 'wb'))
-                    fine = True
-                except IndexError:
-                    fine = False
-                if fine:
-                    await self.bot.say('ToDo removed!')
-                else:
-                    await self.bot.say('The number was wrong...')
+                await self.bot.say('ToDo removed!')
             else:
-                await self.bot.say('I need a number...')
+                await self.bot.say('The number was wrong...')
         else:
             await self.bot.say('You have nothing to do! :D')
 
