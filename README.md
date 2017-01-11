@@ -18,7 +18,7 @@ Install cog
   * todo  
     *Shows your own ToDo list*
   * todo add  
-    *Add a new ToDo - Use Quotes if more than one word*
+    *Add a new ToDo*
   * todo rm Index-Number  
     *Remove a ToDo*
 
@@ -36,7 +36,7 @@ Install cog
     *Define the welcome message. To mention the member, put in the text `member.mention`*
 * msgs
   * add  
-    *Add a message to the broadcast - Use Quotes if more than one word*
+    *Add a message to the broadcast*
   * bchan  
     *Set the channel for the broadcast*
   * delay  
@@ -49,3 +49,15 @@ Install cog
     *Start the broadcast. Channel, delay and at leat one message need to be set.*
   * stop  
     *Stop the broadcast. Happens also if you add or remove messages from the broadcast.*
+
+## Reminder
+**"Forked" from [RemindMe](https://github.com/Twentysix26/Red-Cogs/)**  
+Reminds you, or someone else after a specific time amount.  
+Install cog  
+`[p]cog install atsp reminder`
+
+### Commands
+* forgetme
+  *Removes all your active reminders*
+* remind
+  *Either reminds you "me" or reminds another user. You can use their actual nick, the loginname with and without the #Numbers or just @Mention.*
