@@ -10,7 +10,7 @@ Install repo
 **No, these are not things which I have to do. It's a cog!**  
 
 Every user has his own ToDo list, on which they can add and remove single entries.  
-Allows only Moderators and above to use the commands.  
+~~-Allows only Moderators and above to use the commands.~~  
 Install cog  
 `[p]cog install atsp todo`
 * Commands *Use with your prefix*
@@ -18,7 +18,7 @@ Install cog
   * todo  
     *Shows your own ToDo list*
   * todo add  
-    *Add a new ToDo*
+    *Add a new ToDo - limited to 200 characters*
   * todo rm Index-Number  
     *Remove a ToDo*
 
@@ -30,14 +30,14 @@ Install cog
 
 ### Commands
 * welcome
-  * wchan  
+  * chan  
     *Set the channel on which to greet the new members*
   * text  
     *Define the welcome message. To mention the member, put in the text `member.mention`*
 * msgs
   * add  
     *Add a message to the broadcast*
-  * bchan  
+  * chan  
     *Set the channel for the broadcast*
   * delay  
     *The delay in __seconds__ between the messages*

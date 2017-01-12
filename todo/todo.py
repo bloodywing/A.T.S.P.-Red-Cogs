@@ -1,8 +1,8 @@
 import os
-import pickle
 import discord
 from cogs.utils import checks
 from discord.ext import commands
+from cogs.utils.dataIO import dataIO
 
 
 class ToDo:
@@ -10,11 +10,10 @@ class ToDo:
 
     def __init__(self, bot):
         self.bot = bot
-        self.config_file = 'data/todo/todo.cfg'
-        self.config = pickle.load(open(self.config_file, 'rb'))
+        self.config_file = 'data/todo/todo.json'
+        self.config = dataIO.load_json(self.config_file)
 
     @commands.group(pass_context=True)
-    @checks.admin_or_permissions(ban_members=True)
     async def todo(self, cmd):
         '''Make your own ToDo list and manage it'''
         if cmd.invoked_subcommand is None:
@@ -22,11 +21,16 @@ class ToDo:
                 user = str(cmd.message.author)
                 index = 0
                 if len(self.config[user]) != 0:
-                    msg = '**Your ToDo list**\n'
+                    msg = ''
                     for i in self.config[user]:
                         msg += '*{0}*: {1}\n'.format(index, i)
                         index += 1
-                    await self.bot.say(msg)
+                    user = cmd.message.author.nick or cmd.message.author.name
+                    embed = discord.Embed(description=msg)
+                    embed.title = 'ToDo of {} things'.format(index)
+                    embed.colour = discord.Colour.green()
+                    embed.set_footer(text='ToDos of {0}'.format(user), icon_url='https://yamahi.eu/favicon.ico')
+                    await self.bot.say(embed=embed)
                 else:
                     await self.bot.say('You have nothing to do! :D')
             except KeyError:
@@ -35,25 +39,26 @@ class ToDo:
                 await self.bot.say('An error happened?!')
 
     @todo.command(pass_context=True)
-    @checks.admin_or_permissions(ban_members=True)
-    async def add(self, cmd, *, text : str):
+    async def add(self, cmd, *, text: str):
         '''Add something to do'''
         user = str(cmd.message.author)
         if user not in self.config:
             self.config[user] = list()
-        self.config[user].append(text)
-        pickle.dump(self.config, open(self.config_file, 'wb'))
-        await self.bot.say('New ToDo added!')
+        if len(text) <= 200:
+            self.config[user].append(text)
+            dataIO.save_json(self.config_file, self.config)
+            await self.bot.say('New ToDo added!')
+        else:
+            await self.bot.say('Max. 200 characters allowed!')
 
     @todo.command(pass_context=True)
-    @checks.admin_or_permissions(ban_members=True)
-    async def rm(self, cmd, index : int):
+    async def rm(self, cmd, index: int):
         '''Remove something you did already'''
         user = str(cmd.message.author)
         if user in self.config:
             try:
                 self.config[user].pop(index)
-                pickle.dump(self.config, open(self.config_file, 'wb'))
+                dataIO.save_json(self.config_file, self.config)
                 fine = True
             except IndexError:
                 fine = False
@@ -70,8 +75,8 @@ def check_data():
     if not os.path.exists(path):
         print('First run setup...')
         os.makedirs(path)
-    if not os.path.exists('data/todo/todo.cfg'):
-        pickle.dump(dict(), open('data/todo/todo.cfg', 'wb'))
+    if not os.path.exists('data/todo/todo.json'):
+        dataIO.save_json('data/todo/todo.json', [])
 
 
 def setup(bot):

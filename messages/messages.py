@@ -1,9 +1,9 @@
 import os
-import pickle
 import discord
 from asyncio import sleep
 from cogs.utils import checks
 from discord.ext import commands
+from cogs.utils.dataIO import dataIO
 
 
 class Messages:
@@ -12,8 +12,8 @@ class Messages:
     def __init__(self, bot):
         self.bot = bot
         self.bc = False
-        self.config_file = 'data/messages/messages.cfg'
-        self.config = pickle.load(open(self.config_file, 'rb'))
+        self.config_file = 'data/messages/messages.json'
+        self.config = dataIO.load_json(self.config_file)
 
     # Welcome-Code
     @commands.group(pass_context=True)
@@ -23,20 +23,20 @@ class Messages:
         if cmd.invoked_subcommand is None:
             await self.bot.send_cmd_help(cmd)
 
-    @welcome.command(pass_context=True)
+    @welcome.command(name='chan', pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def wchan(self, cmd, text : str):
+    async def wchan(self, cmd, text: str):
         '''Set the channel for the welcome message'''
         self.config['welcome'][0] = text
-        pickle.dump(self.config, open(self.config_file, 'wb'))
+        dataIO.save_json(self.config_file, self.config)
         await self.bot.say('The channel #{0} for Welcome is saved!'.format(text))
 
     @welcome.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def text(self, cmd, *, text : str):
+    async def text(self, cmd, *, text: str):
         '''Set the welcome message - put member.mention to mention the user'''
         self.config['welcome'][1] = text
-        pickle.dump(self.config, open(self.config_file, 'wb'))
+        dataIO.save_json(self.config_file, self.config)
         await self.bot.say('Welcome message saved!')
 
     async def member_join(self, member):
@@ -105,52 +105,57 @@ class Messages:
         '''List the Messages'''
         index = 0
         if len(self.config['bc']) != 0:
-            msg = '**Broadcast Messages**\n*Delay*: {0}\n*Channel*: #{1}\n'.format(self.config['delay'], self.config['chan'])
+            msg = ''
             for i in self.config['bc']:
                 msg += '*{0}*: {1}\n'.format(index, i)
                 index += 1
-            await self.bot.say(msg)
+            user = cmd.message.author.nick or cmd.message.author.name
+            embed = discord.Embed(description=msg)
+            embed.title = 'Broadcast Messages'
+            embed.colour = discord.Colour.blue()
+            embed.set_footer(text='Channel: #{1} - Delay: {0} seconds'.format(self.config['delay'], self.config['chan']), icon_url='https://yamahi.eu/favicon.ico')
+            await self.bot.say(embed=embed)
         else:
             await self.bot.say('You didn\'t set any messages...')
 
-    @msgs.command(pass_context=True)
+    @msgs.command(name='chan', pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def bchan(self, cmd, text : str):
+    async def bchan(self, cmd, text: str):
         '''Set the channel for the broadcast'''
         self.config['chan'] = text
-        pickle.dump(self.config, open(self.config_file, 'wb'))
+        dataIO.save_json(self.config_file, self.config)
         await self.bot.say('The channel for Broadcast is saved {0}!'.format(text))
 
     @msgs.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def delay(self, cmd, seconds : int):
+    async def delay(self, cmd, seconds: int):
         '''Set the delay in seconds'''
-        pickle.dump(self.config, open(self.config_file, 'wb'))
+        dataIO.save_json(self.config_file, self.config)
         await self.bot.say('Broadcast delay set to {0}!'.format(seconds))
 
     @msgs.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def add(self, cmd, *, text : str):
+    async def add(self, cmd, *, text: str):
         '''Add a message'''
         if self.bc:
             self.bc = False
         self.config['bc'].append(text)
-        pickle.dump(self.config, open(self.config_file, 'wb'))
+        dataIO.save_json(self.config_file, self.config)
         await self.bot.say('New Broadcast message added!')
 
     @msgs.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def rm(self, cmd, index : int):
+    async def rm(self, cmd, index: int):
         '''Remove a message'''
         try:
             if self.bc:
                 self.bc = False
             self.config['bc'].pop(index)
-            pickle.dump(self.config, open(self.config_file, 'wb'))
             fine = True
         except IndexError:
             fine = False
         if fine:
+            dataIO.save_json(self.config_file, self.config)
             await self.bot.say('Broadcast message removed!')
         else:
             await self.bot.say('The number was wrong...')
@@ -161,13 +166,13 @@ def check_data():
     if not os.path.exists(path):
         print('First run setup...')
         os.makedirs(path)
-    if not os.path.exists('data/messages/messages.cfg'):
+    if not os.path.exists('data/messages/messages.json'):
         config = dict()
         config['chan'] = str()
         config['delay'] = int()
         config['bc'] = list()
         config['welcome'] = list(['', ''])
-        pickle.dump(config, open('data/messages/messages.cfg', 'wb'))
+        dataIO.save_json('data/messages/messages.json', config)
 
 
 def setup(bot):
