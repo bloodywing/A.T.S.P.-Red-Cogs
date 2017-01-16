@@ -3,6 +3,7 @@ import discord
 from cogs.utils import checks
 from discord.ext import commands
 from cogs.utils.dataIO import dataIO
+from cogs.utils.chat_formatting import pagify
 
 
 class ToDo:
@@ -25,12 +26,13 @@ class ToDo:
                     for i in self.config[user]:
                         msg += '*{0}*: {1}\n'.format(index, i)
                         index += 1
-                    user = cmd.message.author.nick or cmd.message.author.name
-                    embed = discord.Embed(description=msg)
-                    embed.title = 'ToDo of {} things'.format(index)
-                    embed.colour = discord.Colour.green()
-                    embed.set_footer(text='ToDos of {0}'.format(user), icon_url='https://yamahi.eu/favicon.ico')
-                    await self.bot.say(embed=embed)
+                    for page in pagify(msg):
+                        user = cmd.message.author.nick or cmd.message.author.name
+                        embed = discord.Embed(description=page)
+                        embed.title = 'ToDo of {} things'.format(index)
+                        embed.colour = discord.Colour.green()
+                        embed.set_footer(text='ToDos of {0}'.format(user), icon_url='https://yamahi.eu/favicon.ico')
+                        await self.bot.say(embed=embed)
                 else:
                     await self.bot.say('You have nothing to do! :D')
             except KeyError:
@@ -53,7 +55,7 @@ class ToDo:
 
     @todo.command(pass_context=True)
     async def insert(self, cmd, index: int, *, text: str):
-        '''Insert something to do to a position'''
+        '''Add something to do'''
         user = str(cmd.message.author)
         if user not in self.config:
             self.config[user] = list()

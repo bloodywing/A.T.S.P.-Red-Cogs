@@ -4,6 +4,7 @@ from asyncio import sleep
 from cogs.utils import checks
 from discord.ext import commands
 from cogs.utils.dataIO import dataIO
+from cogs.utils.chat_formatting import pagify
 
 
 class Messages:
@@ -109,12 +110,13 @@ class Messages:
             for i in self.config['bc']:
                 msg += '*{0}*: {1}\n'.format(index, i)
                 index += 1
-            user = cmd.message.author.nick or cmd.message.author.name
-            embed = discord.Embed(description=msg)
-            embed.title = 'Broadcast Messages'
-            embed.colour = discord.Colour.blue()
-            embed.set_footer(text='Channel: #{1} - Delay: {0} seconds'.format(self.config['delay'], self.config['chan']), icon_url='https://yamahi.eu/favicon.ico')
-            await self.bot.say(embed=embed)
+            for page in pagify(msg):
+                user = cmd.message.author.nick or cmd.message.author.name
+                embed = discord.Embed(description=msg)
+                embed.title = 'Broadcast Messages'
+                embed.colour = discord.Colour.blue()
+                embed.set_footer(text='Channel: #{1} - Delay: {0} seconds'.format(self.config['delay'], self.config['chan']), icon_url='https://yamahi.eu/favicon.ico')
+                await self.bot.say(embed=embed)
         else:
             await self.bot.say('You didn\'t set any messages...')
 
