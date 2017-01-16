@@ -52,6 +52,19 @@ class ToDo:
             await self.bot.say('Max. 200 characters allowed!')
 
     @todo.command(pass_context=True)
+    async def insert(self, cmd, index: int, *, text: str):
+        '''Insert something to do to a position'''
+        user = str(cmd.message.author)
+        if user not in self.config:
+            self.config[user] = list()
+        if len(text) <= 200:
+            self.config[user].insert(index, text)
+            dataIO.save_json(self.config_file, self.config)
+            await self.bot.say('New ToDo added!')
+        else:
+            await self.bot.say('Max. 200 characters allowed!')
+
+    @todo.command(pass_context=True)
     async def rm(self, cmd, index: int):
         '''Remove something you did already'''
         user = str(cmd.message.author)

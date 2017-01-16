@@ -10,7 +10,7 @@ Install repo
 **No, these are not things which I have to do. It's a cog!**  
 
 Every user has his own ToDo list, on which they can add and remove single entries.  
-~~-Allows only Moderators and above to use the commands.~~  
+~~Allows only Moderators and above to use the commands.~~  
 Install cog  
 `[p]cog install atsp todo`
 * Commands *Use with your prefix*
@@ -19,6 +19,8 @@ Install cog
     *Shows your own ToDo list*
   * todo add  
     *Add a new ToDo - limited to 200 characters*
+* todo insert  
+    *Insert a new ToDo to a position
   * todo rm Index-Number  
     *Remove a ToDo*
 
