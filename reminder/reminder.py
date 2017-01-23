@@ -24,6 +24,9 @@ class Reminder:
         Example:
         [p]remind me 3 days Have sushi with Asu and JennJenn
         [p]remind Asu 2 months Buy JennJenn a Coke"""
+        if not self.reminders[0]["CHANNEL"]:
+            await self.bot.say("Set a channel first `remindset #channel`!")
+            return
         author = ""
         notme = ctx.message.server.get_member_named(user)
         if user == 'me':  # There might be a problem if a user exists with that name
@@ -56,6 +59,15 @@ class Reminder:
         await self.bot.say("I will remind {} that in {} {}.".format(author.name, str(quantity), time_unit + s))
         fileIO("data/reminder/reminders.json", "save", self.reminders)
 
+    @checks.is_owner()
+    @commands.command(pass_context=True)
+    async def remindset(self, ctx, channel: discord.Channel):
+        """Set a channel in which to remind the users"""
+        self.reminders[0]["SERVER"] = ctx.message.server.id
+        self.reminders[0]["CHANNEL"] = channel.id
+        fileIO("data/reminder/reminders.json", "save", self.reminders)
+        await self.bot.say("Channel set!")
+
     @commands.command(pass_context=True)
     async def forgetme(self, ctx):
         """Removes all your upcoming notifications"""
@@ -76,10 +88,15 @@ class Reminder:
     async def check_reminders(self):
         while self is self.bot.get_cog("Reminder"):
             to_remove = []
-            for reminder in self.reminders:
+            for reminder in self.reminders[1:]:
                 if reminder["FUTURE"] <= int(time.time()):
                     try:
-                        await self.bot.send_message(discord.User(id=reminder["ID"]), "You asked me to remind you this:\n{}".format(reminder["TEXT"]))
+                        serverid = self.reminders[0]["SERVER"]
+                        for server in self.bot.servers:
+                            if server.id == serverid:
+                                channel = server.get_channel(self.reminders[0]["CHANNEL"])
+                                break
+                        await self.bot.send_message(channel, discord.User(id=reminder["ID"]).mention + " remember to {}".format(reminder["TEXT"]))
                     except (discord.errors.Forbidden, discord.errors.NotFound):
                         to_remove.append(reminder)
                     except discord.errors.HTTPException:
@@ -103,7 +120,7 @@ def check_files():
     f = "data/reminder/reminders.json"
     if not fileIO(f, "check"):
         print("Creating empty reminders.json...")
-        fileIO(f, "save", [])
+        fileIO(f, "save", [{"channel": ""}])
 
 
 def setup(bot):

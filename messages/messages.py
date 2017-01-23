@@ -26,11 +26,11 @@ class Messages:
 
     @welcome.command(name='chan', pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def wchan(self, cmd, text: str):
+    async def wchan(self, cmd, channel: discord.Channel):
         '''Set the channel for the welcome message'''
-        self.config['welcome'][0] = text
+        self.config['welcome'][0] = channel.id
         dataIO.save_json(self.config_file, self.config)
-        await self.bot.say('The channel #{0} for Welcome is saved!'.format(text))
+        await self.bot.say('The channel #{0} for Welcome is saved!'.format(channel.name))
 
     @welcome.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)
@@ -42,12 +42,7 @@ class Messages:
 
     async def member_join(self, member):
         if self.config['welcome'][0] and self.config['welcome'][1]:
-            channels = member.server.channels
-            chantext = self.config['welcome'][0]
-            for chan in channels:
-                if chantext == chan.name:
-                    channel = chan
-                    break
+            channel = cmd.message.server.get_channel(self.config['chan'])
             await self.bot.send_message(channel, self.config['welcome'][1].replace('member.mention', member.mention))
 
     # Broadcast-Code
@@ -68,15 +63,9 @@ class Messages:
     @checks.admin_or_permissions(administrator=True)
     async def start(self, cmd):
         '''Start the broadcast'''
-        channels = cmd.message.server.channels
-        chantext = self.config['chan']
-        channel = False
+        channel = cmd.message.server.get_channel(self.config['chan'])
         if not self.bc:
             if len(self.config['bc']) > 0:
-                for chan in channels:
-                    if chantext == chan.name:
-                        channel = chan
-                        break
                 if channel:
                     if self.config['delay']:
                         self.bc = True
@@ -122,11 +111,11 @@ class Messages:
 
     @msgs.command(name='chan', pass_context=True)
     @checks.admin_or_permissions(administrator=True)
-    async def bchan(self, cmd, text: str):
+    async def bchan(self, cmd, channel: discord.Channel):
         '''Set the channel for the broadcast'''
-        self.config['chan'] = text
+        self.config['chan'] = channel.id
         dataIO.save_json(self.config_file, self.config)
-        await self.bot.say('The channel for Broadcast is saved {0}!'.format(text))
+        await self.bot.say('The channel #{0} for Broadcast is saved!'.format(channel.name))
 
     @msgs.command(pass_context=True)
     @checks.admin_or_permissions(administrator=True)

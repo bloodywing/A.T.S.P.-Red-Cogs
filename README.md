@@ -54,7 +54,7 @@ Install cog
 
 ## Reminder
 **"Forked" from [RemindMe](https://github.com/Twentysix26/Red-Cogs/)**  
-Reminds you, or someone else after a specific time amount.  
+Reminds you, or someone else after a specific time amount in a channel.  
 Install cog  
 `[p]cog install atsp reminder`
 
@@ -63,3 +63,5 @@ Install cog
   *Removes all your active reminders*
 * remind  
   *Either reminds you "me" or reminds another user. You can use their actual nick, the loginname with and without the #Numbers or just @Mention.*
+* remindset  
+  *Owner only - Sets a channel to remind you in.*
