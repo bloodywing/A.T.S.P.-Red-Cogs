@@ -42,7 +42,7 @@ class Messages:
 
     async def member_join(self, member):
         if self.config['welcome'][0] and self.config['welcome'][1]:
-            channel = cmd.message.server.get_channel(self.config['chan'])
+            channel = member.server.get_channel(self.config['welcome'][0])
             await self.bot.send_message(channel, self.config['welcome'][1].replace('member.mention', member.mention))
 
     # Broadcast-Code

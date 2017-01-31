@@ -26,13 +26,16 @@ class ToDo:
                     for i in self.config[user]:
                         msg += '*{0}*: {1}\n'.format(index, i)
                         index += 1
-                    for page in pagify(msg):
-                        user = cmd.message.author.nick or cmd.message.author.name
+                    page_index = 1
+                    pages = pagify(msg)
+                    for page in pages:
+                        nick = cmd.message.author.nick or cmd.message.author.name
                         embed = discord.Embed(description=page)
-                        embed.title = 'ToDo of {} things'.format(index)
+                        embed.title = '{}\'s ToDo of {} things'.format(nick, len(self.config[user]))
                         embed.colour = discord.Colour.green()
-                        embed.set_footer(text='ToDos of {0}'.format(user), icon_url='https://yamahi.eu/favicon.ico')
+                        embed.set_footer(text='Part {}'.format(page_index), icon_url='https://yamahi.eu/favicon.ico')
                         await self.bot.say(embed=embed)
+                        page_index += 1
                 else:
                     await self.bot.say('You have nothing to do! :D')
             except KeyError:
