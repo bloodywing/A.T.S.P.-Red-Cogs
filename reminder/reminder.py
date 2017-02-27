@@ -73,7 +73,7 @@ class Reminder:
         """Removes all your upcoming notifications"""
         author = ctx.message.author
         to_remove = []
-        for reminder in self.reminders:
+        for reminder in self.reminders[1:]:
             if reminder["ID"] == author.id:
                 to_remove.append(reminder)
 

@@ -72,7 +72,7 @@ class Messages:
                         while self.bc:
                             for msg in self.config['bc']:
                                 if self.bc:
-                                    await self.bot.send_message(channel, msg)
+                                    await self.bot.send_message(channel, ':loudspeaker: ' + msg)
                                     for sec in range(self.config['delay']):
                                         await sleep(1)
                                         if not self.bc:
