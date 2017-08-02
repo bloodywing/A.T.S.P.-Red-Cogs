@@ -20,7 +20,7 @@ Install cog
   * todo add  
     *Add a new ToDo - limited to 200 characters*
 * todo insert  
-    *Insert a new ToDo to a position
+    *Insert a new ToDo to a position*
   * todo rm Index-Number  
     *Remove a ToDo*
 
