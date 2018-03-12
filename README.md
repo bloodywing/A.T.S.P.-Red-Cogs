@@ -10,7 +10,6 @@ Install repo
 **No, these are not things which I have to do. It's a cog!**  
 
 Every user has his own ToDo list, on which they can add and remove single entries.  
-~~Allows only Moderators and above to use the commands.~~  
 Install cog  
 `[p]cog install atsp todo`
 * Commands *Use with your prefix*
@@ -21,7 +20,7 @@ Install cog
     *Add a new ToDo - limited to 200 characters*
 * todo insert  
     *Insert a new ToDo to a position*
-  * todo rm Index-Number  
+* todo rm Index-Number  
     *Remove a ToDo*
 
 ## Messages
@@ -48,7 +47,7 @@ Install cog
   * rm  
     *Remove a message from the broadcast*
   * start  
-    *Start the broadcast. Channel, delay and at leat one message need to be set.*
+    *Start the broadcast. Channel, delay and at least one message need to be set.*
   * stop  
     *Stop the broadcast. Happens also if you add or remove messages from the broadcast.*
 
@@ -65,3 +64,18 @@ Install cog
   *Either reminds you "me" or reminds another user. You can use their actual nick, the loginname with and without the #Numbers or just @Mention.*
 * remindset  
   *Owner only - Sets a channel to remind you in.*
+
+## RSS
+**"Forked" from [RSS](https://github.com/tekulvw/Squid-Plugins)**  
+Posts new feed entries in the desired channels. The fork includes filtering for keywords in the title.    
+Install cog  
+`[p]cog install atsp rss`
+
+### Commands
+* add  
+* filter
+* filter_reset  
+* force
+* list
+* remove
+* template  
