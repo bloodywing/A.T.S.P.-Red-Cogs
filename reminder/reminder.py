@@ -86,6 +86,7 @@ class Reminder:
             await self.bot.say("You don't have any upcoming notification.")
 
     async def check_reminders(self):
+        asyncio.sleep(60)
         serverid = self.reminders[0]["SERVER"]
         for server in self.bot.servers:
             if server.id == serverid:
