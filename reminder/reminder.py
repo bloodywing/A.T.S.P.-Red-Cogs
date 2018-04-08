@@ -86,16 +86,16 @@ class Reminder:
             await self.bot.say("You don't have any upcoming notification.")
 
     async def check_reminders(self):
+        serverid = self.reminders[0]["SERVER"]
+        for server in self.bot.servers:
+            if server.id == serverid:
+                channel = server.get_channel(self.reminders[0]["CHANNEL"])
+                break
         while self is self.bot.get_cog("Reminder"):
             to_remove = []
             for reminder in self.reminders[1:]:
                 if reminder["FUTURE"] <= int(time.time()):
                     try:
-                        serverid = self.reminders[0]["SERVER"]
-                        for server in self.bot.servers:
-                            if server.id == serverid:
-                                channel = server.get_channel(self.reminders[0]["CHANNEL"])
-                                break
                         await self.bot.send_message(channel, discord.User(id=reminder["ID"]).mention + " remember to {}".format(reminder["TEXT"]))
                     except (discord.errors.Forbidden, discord.errors.NotFound):
                         to_remove.append(reminder)
