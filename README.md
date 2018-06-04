@@ -79,3 +79,17 @@ Install cog
 * list
 * remove
 * template  
+
+## Whitelist
+**"Forked" from [Mod](https://github.com/Cog-Creators/Red-DiscordBot/blob/develop/cogs/mod.py#L1131)**
+Allows only the messages containing all of the set keywords. The opposite of the filter command. Keywords are set per channel instead globaly for a whole server. Deleted messages are posted to a specified channel instead of the log.
+Install cog
+`[p]cog install atsp whitelist`
+
+### Commands
+* add  
+  *Adds words to the filter*
+* remove  
+  *Remove words from the filter*
+* set  
+  *Set a channel for the log of deleted messages*
