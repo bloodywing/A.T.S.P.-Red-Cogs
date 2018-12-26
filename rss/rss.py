@@ -6,6 +6,7 @@ import asyncio
 import string
 import logging
 import copy
+from bs4 import BeautifulSoup
 
 from cogs.utils.dataIO import fileIO
 from cogs.utils.chat_formatting import *
@@ -294,6 +295,7 @@ class RSS(object):
             return None
 
         rss = feedparser.parse(html)
+        rss.entries[0]['description'] = BeautifulSoup(rss.entries[0]['description'].replace('<br>', '\n'), 'html5lib').get_text()
 
         if rss.bozo:
             log.debug("Feed at url below is bad.\n\t".format(url))
