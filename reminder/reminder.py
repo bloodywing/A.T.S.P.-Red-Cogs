@@ -16,8 +16,7 @@ class Reminder:
     def __init__(self, bot):
         self.bot = bot
         self.reminders = fileIO("data/reminder/reminders.json", "load")
-        self.units = {"minute": 60, "hour": 3600, "day": 86400, "week": 604800, "month": 2592000}
-
+        
     @commands.command(pass_context=True)
     async def remind(self, ctx, user: str, quantity: int, time_unit: str, *, text: str):
         """Sends you <text> when the time is up
@@ -58,6 +57,7 @@ class Reminder:
            _, unit = re.split('\d+', m)    
            delta_unit = unit_convert_dict.get(unit)
            delta += relativdelta(**{delta_unit: re.match('\d+').group()}) 
+        future = (datetime.datetime.now() + delta).timestamp()
         
         self.reminders.append({"ID": author.id, "FUTURE": future, "TEXT": text})
         logger.info("{} ({}) set a reminder.".format(author.name, author.id))
