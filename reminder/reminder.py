@@ -56,7 +56,7 @@ class Reminder:
         for m in future_matches:
            _, unit = re.split('\d+', m)    
            delta_unit = unit_convert_dict.get(unit)
-           delta += relativedelta(**{delta_unit: re.match('\d+', m).group()}) 
+           delta += relativedelta(**{delta_unit: int(re.match('\d+', m).group())}) 
         future = (datetime.datetime.now() + delta).timestamp()
         
         self.reminders.append({"ID": author.id, "FUTURE": future, "TEXT": text})
