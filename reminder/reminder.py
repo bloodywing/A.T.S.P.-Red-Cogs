@@ -18,7 +18,7 @@ class Reminder:
         self.reminders = fileIO("data/reminder/reminders.json", "load")
         
     @commands.command(pass_context=True)
-    async def remind(self, ctx, user: str, quantity: int, time_unit: str, *, text: str):
+    async def remind(self, ctx, user: str, time_unit: str, *, text: str):
         """Sends you <text> when the time is up
 
         Accepts: minutes, hours, days, weeks, month
