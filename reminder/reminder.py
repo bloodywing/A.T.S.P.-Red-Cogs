@@ -3,10 +3,12 @@ from discord.ext import commands
 from .utils.dataIO import fileIO
 from cogs.utils import checks
 import os
+import re
 import asyncio
 import time
 import logging
-
+import datetime
+from dateutil.relativedelta import relativedelta
 
 class Reminder:
     """Never forget anything anymore."""
@@ -38,22 +40,25 @@ class Reminder:
         if not author:
             await self.bot.say("The user {0} doesn't exist!".format(user))
             return
-        time_unit = time_unit.lower()
         s = ""
-        if time_unit.endswith("s"):
-            time_unit = time_unit[:-1]
-            s = "s"
-        if time_unit not in self.units:
-            await self.bot.say("Invalid time unit. Choose minutes/hours/days/weeks/month")
-            return
-        if quantity < 1:
-            await self.bot.say("Quantity must not be 0 or negative.")
-            return
-        if len(text) > 1960:
-            await self.bot.say("Text is too long.")
-            return
-        seconds = self.units[time_unit] * quantity
-        future = int(time.time()+seconds)
+        
+        future_matches = re.findall(r'\d{1,2}\w', time_unit)
+        unit_convert_dict = {
+            's': 'seconds',
+            'm': 'minutes',
+            'h': 'hours',
+            'M': 'months',
+            'w': 'weeks',
+            'd': 'days',
+            'y': 'years'
+        }
+        
+        delta = relativdelta()
+        for m in future_matches:
+           _, unit = re.split('\d+', m)    
+           delta_unit = unit_convert_dict.get(unit)
+           delta += relativdelta(**{delta_unit: re.match('\d+').group()}) 
+        
         self.reminders.append({"ID": author.id, "FUTURE": future, "TEXT": text})
         logger.info("{} ({}) set a reminder.".format(author.name, author.id))
         await self.bot.say("I will remind {} that in {} {}.".format(author.name, str(quantity), time_unit + s))
