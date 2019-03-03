@@ -55,13 +55,13 @@ class Reminder:
         delta = relativedelta()
         for m in future_matches:
            _, unit = re.split('\d+', m)    
-           delta_unit = unit_convert_dict.get(unit)
+           delta_unit = unit_convert_dict.get(unit, 'minutes')
            delta += relativedelta(**{delta_unit: int(re.match('\d+', m).group())}) 
         future = (datetime.datetime.now() + delta).timestamp()
         
         self.reminders.append({"ID": author.id, "FUTURE": future, "TEXT": text})
         logger.info("{} ({}) set a reminder.".format(author.name, author.id))
-        await self.bot.say("I will remind {} that in {} {}.".format(author.name, str(quantity), time_unit + s))
+        await self.bot.say("I will remind {} that in {}.".format(author.name, time_unit))
         fileIO("data/reminder/reminders.json", "save", self.reminders)
 
     @checks.is_owner()
